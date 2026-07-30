@@ -430,18 +430,22 @@
         </div>
     </main>
 
+    <script src="main.js"></script>
     <script>
         function filterProducts() {
-            const searchQuery = document.getElementById("search-bar").value.toLowerCase();
-            const selectedCategory = document.getElementById("category-filter").value;
-            const maxPrice = parseFloat(document.getElementById("price-range").value);
+            const searchInput = document.getElementById("search-bar");
+            const searchQuery = searchInput ? searchInput.value.toLowerCase() : "";
+            const categoryFilter = document.getElementById("category-filter");
+            const selectedCategory = categoryFilter ? categoryFilter.value : "all";
+            const priceRange = document.getElementById("price-range");
+            const maxPrice = priceRange ? parseFloat(priceRange.value) : Infinity;
             
             const cards = document.querySelectorAll(".product-card");
 
             cards.forEach(card => {
-                const title = card.getAttribute("data-title");
-                const category = card.getAttribute("data-category");
-                const price = parseFloat(card.getAttribute("data-price"));
+                const title = (card.getAttribute("data-title") || "").toLowerCase();
+                const category = card.getAttribute("data-category") || "";
+                const price = parseFloat(card.getAttribute("data-price")) || 0;
 
                 const matchesSearch = title.includes(searchQuery);
                 const matchesCategory = (selectedCategory === "all" || category === selectedCategory);
@@ -456,30 +460,13 @@
         }
 
         function updatePriceLabel() {
-            const val = document.getElementById("price-range").value;
-            document.getElementById("price-val").textContent = val + " DT";
-        }
-
-        function addToCart(productName, productPrice) {
-            let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
-            let existingItem = cart.find(item => item.name === productName);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ name: productName, price: parseFloat(productPrice), quantity: 1 });
+            const priceRange = document.getElementById("price-range");
+            const priceVal = document.getElementById("price-val");
+            if (priceRange && priceVal) {
+                priceVal.textContent = priceRange.value + " DT";
             }
-            localStorage.setItem("cart_items", JSON.stringify(cart));
-            updateCartCount();
-            alert(productName + " ajouté au panier ! 🎉");
         }
-
-        function updateCartCount() {
-            let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
-            let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            let countSpan = document.getElementById("cart-count");
-            if (countSpan) countSpan.textContent = totalItems;
-        }
-
+    </script>
     <script src="chatbot.js"></script>
 </body>
 </html>

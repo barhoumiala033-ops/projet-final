@@ -12,7 +12,6 @@ const products = [
     { id: 10, name: "Tapis de Couloir Hayek Brut", category: "tapis", price: 190, image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600", desc: "Tissage sobre et minimaliste en pure laine de mouton non teinte." }
 ];
 
-
 function displayProducts(productsList) {
     const grid = document.getElementById("products-grid");
     if (!grid) return;
@@ -29,11 +28,13 @@ function displayProducts(productsList) {
         card.className = "product-card";
         card.innerHTML = `
             <div class="product-image-wrapper">
-                <img src="${product.image}" alt="${product.name}">
+                <a href="product-details.html?id=${product.id}">
+                    <img src="${product.image}" alt="${product.name}">
+                </a>
             </div>
             <div class="product-info">
                 <span class="product-cat-tag">${product.category === 'tapis' ? 'Tapis & Tissage' : 'Poterie & Déco'}</span>
-                <h3>${product.name}</h3>
+                <h3 style="cursor:pointer;" onclick="window.location.href='product-details.html?id=${product.id}'">${product.name}</h3>
                 <p class="product-desc">${product.desc}</p>
                 <div class="product-meta">
                     <span class="product-price">${product.price}.000 DT</span>
@@ -44,7 +45,6 @@ function displayProducts(productsList) {
         grid.appendChild(card);
     });
 }
-
 
 function filterProducts() {
     const searchVal = document.getElementById("search-input").value.toLowerCase();
@@ -59,11 +59,11 @@ function filterProducts() {
     displayProducts(filtered);
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
     displayProducts(products);
     
-    // Écouteurs d'événements pour le filtrage en direct
-    document.getElementById("search-input").addEventListener("input", filterProducts);
-    document.getElementById("category-filter").addEventListener("change", filterProducts);
+    const sInput = document.getElementById("search-input");
+    const cFilter = document.getElementById("category-filter");
+    if (sInput) sInput.addEventListener("input", filterProducts);
+    if (cFilter) cFilter.addEventListener("change", filterProducts);
 });

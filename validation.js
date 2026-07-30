@@ -18,7 +18,8 @@ if(cForm) {
         if(ok) {
             alert("Excellent ! Votre commande tunisienne a été validée. Le panier va se vider.");
             localStorage.removeItem('cart');
-            window.location.href = "index.html";
+            localStorage.removeItem('cart_items');
+            window.location.href = "confirmation.html";
         }
     });
 }

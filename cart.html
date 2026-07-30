@@ -76,67 +76,8 @@
         </div>
     </main>
 
-    <script>
-        function displayCart() {
-            let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
-            let listContainer = document.getElementById("cart-items-list");
-            let totalContainer = document.getElementById("cart-total-price");
-            let countSpan = document.getElementById("cart-count");
-            
-            if (cart.length === 0) {
-                listContainer.innerHTML = "<p style='text-align:center; color:#64748b; padding: 20px;'>Votre panier est vide... 🛒</p>";
-                totalContainer.textContent = "0";
-                if (countSpan) countSpan.textContent = "0";
-                return;
-            }
-
-            let html = "";
-            let total = 0;
-            let totalCount = 0;
-
-            cart.forEach((item, index) => {
-                let itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                totalCount += item.quantity;
-
-                html += `
-                    <div class="cart-item">
-                        <div>
-                            <strong style="font-size:16px; color:#1e293b;">${item.name}</strong>
-                            <div style="color:#64748b; font-size:14px;">${item.price} DT x ${item.quantity}</div>
-                        </div>
-                        <div style="display:flex; align-items:center; gap: 20px;">
-                            <span style="font-weight:800; color:#dfa843;">${itemTotal} DT</span>
-                            <button class="btn-danger" onclick="removeItem(${index})">Supprimer 🗑️</button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            listContainer.innerHTML = html;
-            totalContainer.textContent = total;
-            if (countSpan) countSpan.textContent = totalCount;
-        }
-
-        function removeItem(index) {
-            let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
-            cart.splice(index, 1);
-            localStorage.setItem("cart_items", JSON.stringify(cart));
-            displayCart();
-        }
-
-        
-        function goToConfirmation() {
-            let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
-            if(cart.length === 0) {
-                alert("Votre panier est vide !");
-                return;
-            }
-            window.location.href = "confirmation.html";
-        }
-
-        document.addEventListener("DOMContentLoaded", displayCart);
-    </script>
+    <script src="main.js"></script>
+    <script src="cart.js"></script>
     <script src="chatbot.js"></script>
 </body>
 </html>
