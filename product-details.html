@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisanat TN | Détails du Produit</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">Artisanat <span>TN</span></div>
+            <ul class="nav-links">
+                <li><a href="map.html">Carte des Régions 🗺️</a></li>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="shop.html">Boutique</a></li>
+                <li><a href="cart.html">Panier (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="product-detail-layout">
+            <div class="product-gallery">
+                <img id="main-product-img" src="" alt="Produit">
+            </div>
+            <div class="product-info">
+                <h1 id="product-title">Chargement de la pièce...</h1>
+                <p class="price" id="product-price">0.000 DT</p>
+                <div class="divider"></div>
+                <p id="product-desc">Détails de fabrication...</p>
+                
+                <div class="purchase-zone">
+                    <label for="product-qty">Quantité :</label>
+                    <input type="number" id="product-qty" value="1" min="1">
+                    <button id="add-to-cart-btn" class="btn">Ajouter au Panier</button>
+                </div>
+                <a href="shop.html" class="back-link">← Retourner au catalogue</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+    <script src="shop.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

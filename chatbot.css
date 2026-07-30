@@ -1,0 +1,378 @@
+/* Chatbot Container Base */
+#gemini-chatbot-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* Floating Toggle Button */
+#gemini-toggle-btn {
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    color: #ffffff;
+    border: none;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(13, 71, 161, 0.35);
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    position: relative;
+}
+
+#gemini-toggle-btn:hover {
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 8px 25px rgba(13, 71, 161, 0.45);
+}
+
+/* Main Chat Box Window */
+#gemini-chat-box {
+    display: none;
+    width: 370px;
+    height: 520px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 100px);
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+    border: 1px solid #e2e8f0;
+    flex-direction: column;
+    overflow: hidden;
+    position: absolute;
+    bottom: 78px;
+    right: 0;
+    animation: geminiSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes geminiSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Chat Header */
+.gemini-header {
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    color: #ffffff;
+    padding: 14px 18px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.gemini-header-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gemini-avatar {
+    width: 34px;
+    height: 34px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.gemini-header-title {
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.gemini-header-subtitle {
+    font-size: 11px;
+    opacity: 0.85;
+    font-weight: 400;
+}
+
+.gemini-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gemini-header-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    opacity: 0.85;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gemini-header-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Settings Modal Inside Chat */
+#gemini-settings-panel {
+    display: none;
+    background: #f8fafc;
+    padding: 14px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 12px;
+}
+
+#gemini-settings-panel input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    margin-top: 6px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+
+#gemini-settings-panel button {
+    background: #1a73e8;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Messages Scrollable Container */
+#gemini-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #f8fafc;
+    font-size: 14px;
+    scroll-behavior: smooth;
+}
+
+#gemini-messages::-webkit-scrollbar {
+    width: 5px;
+}
+#gemini-messages::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+/* Message Bubbles */
+.gemini-msg-bot {
+    background: #ffffff;
+    color: #1e293b;
+    padding: 12px 14px;
+    border-radius: 16px 16px 16px 4px;
+    max-width: 86%;
+    line-height: 1.45;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid #f1f5f9;
+    align-self: flex-start;
+    animation: geminiFadeIn 0.25s ease;
+}
+
+.gemini-msg-user {
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    color: #ffffff;
+    padding: 10px 14px;
+    border-radius: 16px 16px 4px 16px;
+    max-width: 84%;
+    line-height: 1.45;
+    align-self: flex-end;
+    word-wrap: break-word;
+    box-shadow: 0 2px 6px rgba(26, 115, 232, 0.2);
+    animation: geminiFadeIn 0.25s ease;
+}
+
+@keyframes geminiFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Quick Chips Container */
+#gemini-quick-chips {
+    display: flex;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #ffffff;
+    border-top: 1px solid #f1f5f9;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#gemini-quick-chips::-webkit-scrollbar {
+    display: none;
+}
+
+.gemini-chip {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.gemini-chip:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+/* Chat Input Bar */
+.gemini-input-bar {
+    padding: 10px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    gap: 8px;
+    background: #ffffff;
+    align-items: center;
+}
+
+.gemini-input-bar input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 20px;
+    outline: none;
+    font-size: 13.5px;
+    transition: border-color 0.2s ease;
+}
+
+.gemini-input-bar input:focus {
+    border-color: #1a73e8;
+}
+
+.gemini-send-btn {
+    background: #1a73e8;
+    color: white;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.1s ease;
+    font-size: 16px;
+}
+
+.gemini-send-btn:hover {
+    background: #0d47a1;
+    transform: scale(1.05);
+}
+
+/* Typing Dot Indicator */
+.gemini-typing-dots {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 2px;
+}
+
+.gemini-typing-dots span {
+    width: 6px;
+    height: 6px;
+    background: #94a3b8;
+    border-radius: 50%;
+    animation: geminiDotBounce 1.4s infinite ease-in-out both;
+}
+
+.gemini-typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.gemini-typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes geminiDotBounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+/* Product Card inside Chat */
+.gemini-product-card {
+    margin-top: 10px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease;
+}
+
+.gemini-product-card:hover {
+    transform: translateY(-2px);
+}
+
+.gemini-product-card img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    display: block;
+}
+
+.gemini-product-card-body {
+    padding: 10px 12px;
+}
+
+.gemini-product-title {
+    margin: 0 0 4px 0;
+    color: #0f172a;
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.gemini-product-desc {
+    margin: 0 0 8px 0;
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.3;
+}
+
+.gemini-product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gemini-product-price {
+    font-weight: 800;
+    color: #1a73e8;
+    font-size: 13.5px;
+}
+
+.gemini-product-add-btn {
+    background: #0d47a1;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.gemini-product-add-btn:hover {
+    background: #1a73e8;
+}

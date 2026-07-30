@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisanat TN | Caisse</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">Artisanat <span>TN</span></div>
+            <ul class="nav-links">
+                <li><a href="map.html">Carte des Régions 🗺️</a></li>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="shop.html">Boutique</a></li>
+                <li><a href="cart.html">Panier (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container checkout-container">
+        <h1 class="section-title">Détails de Livraison & Facturation</h1>
+        
+        <form id="checkout-form" class="checkout-form" novalidate>
+            <div class="form-group">
+                <label for="fullname">Nom & Prénom Complexe</label>
+                <input type="text" id="fullname" placeholder="Ex: Mohamed Ben Ali">
+                <span class="error-msg" id="error-name"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">Adresse de Courrier Électronique</label>
+                <input type="email" id="email" placeholder="Ex: med.ali@gmail.com">
+                <span class="error-msg" id="error-email"></span>
+            </div>
+            <div class="form-group">
+                <label for="phone">Numéro de Téléphone (Tunisie)</label>
+                <input type="tel" id="phone" placeholder="Ex: 98456123">
+                <span class="error-msg" id="error-phone"></span>
+            </div>
+            <div class="form-group">
+                <label for="address">Adresse Géographique de Livraison</label>
+                <textarea id="address" rows="3" placeholder="Ex: 14 Rue d'Ibn Khaldoun, Rades, Ben Arous"></textarea>
+                <span class="error-msg" id="error-address"></span>
+            </div>
+            
+            <button type="submit" class="btn btn-block">Enregistrer la commande</button>
+        </form>
+    </main>
+
+    <script src="main.js"></script>
+    <script src="validation.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

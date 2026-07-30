@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisanat TN | Boutique Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        .filter-section {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .search-input, .select-input {
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            min-width: 200px;
+        }
+        .search-input:focus, .select-input:focus {
+            border-color: #dfa843;
+        }
+        .price-filter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        .product-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+        
+      
+        .product-img-wrapper {
+            width: 100%;
+            height: 180px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.06);
+            user-select: none;
+            overflow: hidden; /* Zidna hedhi bch tsawer matokhrojch 3al chtar */
+        }
+        
+        
+        .bg-poterie { background: linear-gradient(135deg, #edd6b1 0%, #d99a4e 100%); }
+        .bg-tapis { background: linear-gradient(135deg, #fca5a5 0%, #dc2626 100%); border: 3px dashed #b91c1c; }
+        .bg-cuir { background: linear-gradient(135deg, #cbd5e1 0%, #475569 100%); }
+        .bg-habits { background: linear-gradient(135deg, #c7d2fe 0%, #4f46e5 100%); }
+        .bg-deco { background: linear-gradient(135deg, #fed7aa 0%, #ca8a04 100%); }
+
+        .product-info { margin-top: 12px; }
+        .product-region {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .product-title {
+            font-size: 16px;
+            color: #1e293b;
+            margin: 5px 0;
+            font-weight: 700;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-rating { color: #facc15; font-size: 14px; margin-bottom: 5px; }
+        .product-review {
+            font-size: 11px;
+            color: #94a3b8;
+            font-style: italic;
+            display: block;
+            margin-bottom: 10px;
+            height: 15px;
+            overflow: hidden;
+        }
+        .product-price {
+            font-size: 16px;
+            color: #dfa843;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .btn-add-cart {
+            background: linear-gradient(135deg, #dfa843, #c79232);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .btn-add-cart:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">Artisanat <span>TN</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="shop.html" class="active">Boutique 🛒</a></li>
+                <li><a href="artisans.html">Artisans 👨‍🎨</a></li>
+                <li><a href="cart.html">Panier (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container" style="margin-top: 30px; margin-bottom: 80px;">
+        <h2 class="section-title">Boutique Artisanale Tunisienne</h2>
+        
+        <div class="filter-section">
+            <input type="text" id="search-bar" class="search-input" placeholder="Rechercher un produit..." oninput="filterProducts()">
+            
+            <select id="category-filter" class="select-input" onchange="filterProducts()">
+                <option value="all">Toutes les catégories</option>
+                <option value="poterie">Poterie & Céramique</option>
+                <option value="tapis">Tapis & Tissage</option>
+                <option value="cuir">Cuir Artisanal</option>
+                <option value="habits">Habits Traditionnels</option>
+                <option value="deco">Décoration & Bois</option>
+            </select>
+
+            <div class="price-filter">
+                <span>Prix Max:</span>
+                <input type="range" id="price-range" min="10" max="500" value="500" oninput="updatePriceLabel(); filterProducts()">
+                <span id="price-val">500 DT</span>
+            </div>
+        </div>
+
+        <div class="shop-grid" id="products-container">
+            <!-- 1 -->
+            <div class="product-card" data-title="vase en poterie bleue" data-category="poterie" data-price="45" data-region="nabeul">
+                <div class="product-img-wrapper bg-poterie">
+                    <img src="data:image/jpeg;base64,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Jr43BoAB0cdPO/ovpHCpzU4bSznUviaT52XzHRBzpWn/ACg3Fvkvo3g17pOGqAu35dj9Vm/J9L+OajdIiLK7EREBERAREQEREBERARFQ59kSrVmrBdSzBupMbrfROZqhkFtdiidPlmvBbVPB71YAut9xlhr8Ox+tgt2WynL5HUfqtIAQATuVtwx32qyuulFidlcay72gWLiflovYjlkuDaw69VVzDzM7GhltABsQupO+nNv9UiV4d2SM3VyuEbbu63uqL62sF4XE6ei69uWZSus4AbXAynZfRHBrSzhmgzbmO/qV88YRE+orY42i7i4aL6Ywyn/CYdTU/wDtRNafMBZue+luE6ZKIizuhERAREQEREBERAREQFbe1XERMYMgLdlb5nS/ms58YesCop3C5apjvaMvaxhn8enxJjexIOXIR+Yagn5foo0nzcwhzdG6DxU845DHW0E1JVABkjbA2+E9D8ioUrKCtbVVEAp5HmE2dy25vI6dD3rXxZdaUck7217AN7WP1XuYZrWsOtl64crslrmf8m2VrPYk5wtM1Iq1bVclgTy9r6KndhsdlSXZtjmPgszDcPqsQq4aeCCV75HBoAadfBU5Zau3cjtvZTgprsXbUyR3ip+2T49FN60fCGAx8P4PHTADnO7Uzh1P8gt4sWeXyu1s8CIi5BERAREQEREBERAREQEREBeEXXqIMWqoYKluWRgsVxmNezw1FUK3CcQfSVbPhJGZpHcR3LvUUzKwvaPm4DjeXJiNBSVJH+pC8EO/6u1HqqTwzI864S3/AMNUh2Syn51GkfxcKVzhaKipYT+Z9h6ALo+H+HIMKPPlf+IqyLGQtsG+DR0W9sii3aQIiKAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQf//Z" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Nabeul</span>
+                    <h3 class="product-title">Vase en Poterie Bleue</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"Magnifique sur ma table !"</span>
+                    <div class="product-price">45 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Vase en Poterie Bleue', 45)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 2 -->
+            <div class="product-card" data-title="tapis margoum authentique" data-category="tapis" data-price="240" data-region="kairouan">
+                <div class="product-img-wrapper bg-tapis">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK0zIBvuU7AFbwdBSNaszrG0EsB8QB3uN4LYC7KKCJFw&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Kairouan</span>
+                    <h3 class="product-title">Tapis Margoum Authentique</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"Qualité incroyable, pure laine."</span>
+                    <div class="product-price">240 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Tapis Margoum Authentique', 240)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 3 -->
+            <div class="product-card" data-title="assiette terre cuite sejnane" data-category="poterie" data-price="35" data-region="sejnane">
+                <div class="product-img-wrapper bg-poterie">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwCuTWOZPr2ga-OalRW9MY3QJEhmGOCaTWAKeaTg5EOg&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Sejnane</span>
+                    <h3 class="product-title">Assiette Sejnane</h3>
+                    <div class="product-rating">⭐⭐⭐⭐☆</div>
+                    <span class="product-review">"Style berbère unique."</span>
+                    <div class="product-price">35 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Assiette Sejnane', 35)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 4 -->
+            <div class="product-card" data-title="babouches cuir jaune" data-category="cuir" data-price="40" data-region="tunis">
+                <div class="product-img-wrapper bg-cuir">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw3nJrDV8-4799Guzvdt4_HrVf_VqmpYmuUISdTeNJaA&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Tunis</span>
+                    <h3 class="product-title">Babouches Cuir Jaune</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"Très confortable à porter."</span>
+                    <div class="product-price">40 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Babouches Cuir Jaune', 40)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 5 -->
+            <div class="product-card" data-title="chechia rouge traditionnelle" data-category="habits" data-price="15" data-region="tunis">
+                <div class="product-img-wrapper bg-habits">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXA2kEjpgey92pljvMluRpK4oCsVGklO8xdTm3LVXhHw&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Tunis</span>
+                    <h3 class="product-title">Chéchia Rouge Classique</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"100% laine véritable."</span>
+                    <div class="product-price">15 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Chéchia Rouge Classique', 15)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 6 -->
+            <div class="product-card" data-title="sac a main en cuir" data-category="cuir" data-price="120" data-region="kairouan">
+                <div class="product-img-wrapper bg-cuir">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZA1X0Rv3Kopq2CkKuW4Gaj9JNiOMPrZGlp-OCe5nq8w&s" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Kairouan</span>
+                    <h3 class="product-title">Sac à Main en Cuir</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"Solide et finitions parfaites."</span>
+                    <div class="product-price">120 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Sac à Main en Cuir', 120)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 7 -->
+            <div class="product-card" data-title="klim gafsi colore" data-category="tapis" data-price="180" data-region="gafsa">
+                <div class="product-img-wrapper bg-tapis">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2xShgvC8Q1foH4MWy7TwCJtFZZDNhMybI1uNCBL4bSA&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Gafsa</span>
+                    <h3 class="product-title">Klim Gafsi Coloré</h3>
+                    <div class="product-rating">⭐⭐⭐⭐☆</div>
+                    <span class="product-review">"Couleurs très vives, j'adore."</span>
+                    <div class="product-price">180 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Klim Gafsi Coloré', 180)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 8 -->
+            <div class="product-card" data-title="bol en bois d olivier" data-category="deco" data-price="25" data-region="sidi bouzid">
+                <div class="product-img-wrapper bg-deco">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8A8OrqHyIB2uWKZrcdJ6NqqyoWYgfizMTIQR9aXZHtw&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Sidi Bouzid</span>
+                    <h3 class="product-title">Bol en Bois d'Olivier</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"Idéal pour la cuisine."</span>
+                    <div class="product-price">25 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Bol en Bois d Olivier', 25)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 9 -->
+            <div class="product-card" data-title="tajine en argile verni" data-category="poterie" data-price="55" data-region="nabeul">
+                <div class="product-img-wrapper bg-poterie">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQGjNS7fNW28Q6LmiW-J6oNQBc23jCChZ0_imvqWm1zA&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Nabeul</span>
+                    <h3 class="product-title">Tajine en Argile Verni</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"Parfait pour la cuisson."</span>
+                    <div class="product-price">55 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Tajine en Argile Verni', 55)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 10 -->
+            <div class="product-card" data-title="burnous artisanal en laine" data-category="habits" data-price="320" data-region="kasserine">
+                <div class="product-img-wrapper bg-habits">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH_GiUOsuTARjQ6u2WrhCf1SFmpPBWpY4XOXS_HuEk6A&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Kasserine</span>
+                    <h3 class="product-title">Burnous en Laine</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"Chaud et traditionnel."</span>
+                    <div class="product-price">320 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Burnous en Laine', 320)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 11 -->
+            <div class="product-card" data-title="chapeau mdhalla en paille" data-category="habits" data-price="20" data-region="djerba">
+                <div class="product-img-wrapper bg-deco">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9ATdlQ1tvQwUctZHkTFbxdFVYyg7wtGph3Nwuj6OGSg&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Djerba</span>
+                    <h3 class="product-title">Chapeau Mdhalla Paille</h3>
+                    <div class="product-rating">⭐⭐⭐⭐☆</div>
+                    <span class="product-review">"Indispensable pour l'été."</span>
+                    <div class="product-price">20 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Chapeau Mdhalla Paille', 20)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 12 -->
+            <div class="product-card" data-title="mortier en bois massif" data-category="deco" data-price="45" data-region="sfax">
+                <div class="product-img-wrapper bg-deco">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyiX49FczUgdPYyzhoQCU6HcT4UCvdf_041JBZ3ncMgA&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Sfax</span>
+                    <h3 class="product-title">Mortier en Bois Massif</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"Très lourd et robuste."</span>
+                    <div class="product-price">45 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Mortier en Bois Massif', 45)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 13 -->
+            <div class="product-card" data-title="tasse artisanale en céramique" data-category="poterie" data-price="18" data-region="nabeul">
+                <div class="product-img-wrapper bg-poterie">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL4yDXscCXIMkeXF5mv8j4eg8cBb_3a5zsXq1Klyxi3w&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Nabeul</span>
+                    <h3 class="product-title">Tasse en Céramique</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"Mon café du matin est meilleur."</span>
+                    <div class="product-price">18 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Tasse en Céramique', 18)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 14 -->
+            <div class="product-card" data-title="pouf en cuir véritable" data-category="cuir" data-price="90" data-region="tozeur">
+                <div class="product-img-wrapper bg-cuir">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTf1MyEsIE_-hOeZtMsTcwsDZCYVLYJ-iOJlZoBSiHdA&s=10" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Tozeur</span>
+                    <h3 class="product-title">Pouf en Cuir Véritable</h3>
+                    <div class="product-rating">⭐⭐⭐⭐⭐</div>
+                    <span class="product-review">"Superbe design au salon."</span>
+                    <div class="product-price">90 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Pouf en Cuir Véritable', 90)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 15 -->
+            <div class="product-card" data-title="tapis en canne de gabes" data-category="tapis" data-price="65" data-region="gabes">
+                <div class="product-img-wrapper bg-tapis">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWfXJURANh-ITTxXCEQdMK5uPzdS1To_qfcspkUeHQHA&s" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="product-info">
+                    <span class="product-region">Gabès</span>
+                    <h3 class="product-title">Tapis en Canne Tressée</h3>
+                    <div class="product-rating">⭐⭐⭐⭐☆</div>
+                    <span class="product-review">"Idéal pour la terrasse."</span>
+                    <div class="product-price">65 DT</div>
+                    <button class="btn-add-cart" onclick="addToCart('Tapis en Canne Tressée', 65)">Ajouter au panier 🛒</button>
+                </div>
+            </div>
+            <!-- 16 -->
+            <div class="product-card" data-title="plat a couscous geant" data-category="poterie" data-price="75" data-region="nabeul">
+                <div class="product-img-wrapper bg-poterie"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfKjqvTIVktC6UTQGwkqJmFjBpEl7Kf3sHt14q-KvTUQ&s=10" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Nabeul</span><h3 class="product-title">Plat à Couscous Géant</h3><div class="product-rating">⭐⭐⭐⭐⭐</div><span class="product-review">"Traditionnel et grand."</span><div class="product-price">75 DT</div><button class="btn-add-cart" onclick="addToCart('Plat à Couscous Géant', 75)">Ajouter au panier 🛒</button></div>
+            </div>
+            <!-- 17 -->
+            <div class="product-card" data-title="cendrier ceramique mosaïque" data-category="poterie" data-price="22" data-region="nabeul">
+                <div class="product-img-wrapper bg-poterie"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUl7VoYZHXNkjTBzaxkNkSbwuBn63_9y4MyFMjfyxXUfZbN9_zMpZO3hHI&s=10" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Nabeul</span><h3 class="product-title">Cendrier Mosaïque</h3><div class="product-rating">⭐⭐⭐⭐☆</div><span class="product-review">"Belles couleurs."</span><div class="product-price">22 DT</div><button class="btn-add-cart" onclick="addToCart('Cendrier Mosaïque', 22)">Ajouter au panier 🛒</button></div>
+            </div>
+            <!-- 18 -->
+            <div class="product-card" data-title="porte-monnaie en cuir" data-category="cuir" data-price="15" data-region="tunis">
+                <div class="product-img-wrapper bg-cuir"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX8MmEdilSANV2d_fAsIz7dmB_Z8-nldmElA6yntfu8Q&s=10" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Tunis</span><h3 class="product-title">Porte-monnaie en Cuir</h3><div class="product-rating">⭐⭐⭐⭐⭐</div><span class="product-review">"Pratique au quotidien."</span><div class="product-price">15 DT</div><button class="btn-add-cart" onclick="addToCart('Porte-monnaie en Cuir', 15)">Ajouter au panier 🛒</button></div>
+            </div>
+            <!-- 19 -->
+            <div class="product-card" data-title="ceinture en cuir artisanal" data-category="cuir" data-price="35" data-region="tunis">
+                <div class="product-img-wrapper bg-cuir"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF0KuBWdKuzS1yC5L9jUImzLD-QWnA4cOMy3HhfKd0xA&s=10" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Tunis</span><h3 class="product-title">Ceinture en Cuir</h3><div class="product-rating">⭐⭐⭐⭐⭐</div><span class="product-review">"Cuir très épais."</span><div class="product-price">35 DT</div><button class="btn-add-cart" onclick="addToCart('Ceinture en Cuir', 35)">Ajouter au panier 🛒</button></div>
+            </div>
+            <!-- 20 -->
+            <div class="product-card" data-title="sandales d ete en cuir" data-category="cuir" data-price="48" data-region="djerba">
+                <div class="product-img-wrapper bg-cuir"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOX6k0_JMlG2ylpFNFGyiuvAuNkZsqs3O4WdC6lG5tg&s=10" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Djerba</span><h3 class="product-title">Sandales d'Été Cuir</h3><div class="product-rating">⭐⭐⭐⭐⭐</div><span class="product-review">"Très légères."</span><div class="product-price">48 DT</div><button class="btn-add-cart" onclick="addToCart('Sandales d Été Cuir', 48)">Ajouter au panier 🛒</button></div>
+            </div>
+            <!-- 21 -->
+            <div class="product-card" data-title="miroir en bois d olivier" data-category="deco" data-price="130" data-region="sousse">
+                <div class="product-img-wrapper bg-deco"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZRAMf2nYKiCKvEe68n-sbU1aSPlZRvCNW6a365AMZkw&s=10" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Sousse</span><h3 class="product-title">Miroir Bois d'Olivier</h3><div class="product-rating">⭐⭐⭐⭐⭐</div><span class="product-review">"Une vraie oeuvre d'art."</span><div class="product-price">130 DT</div><button class="btn-add-cart" onclick="addToCart('Miroir Bois d olivier', 130)">Ajouter au panier 🛒</button></div>
+            </div>
+            <!-- 22 -->
+            <div class="product-card" data-title="planche a decouper en bois" data-category="deco" data-price="38" data-region="sousse">
+                <div class="product-img-wrapper bg-deco"><img src="https://bricola.tn/22931-large_default/planche-a-decouper-en-bois-3516cm-.webp" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Sousse</span><h3 class="product-title">Planched'Olivier</h3><div class="product-rating">⭐⭐⭐⭐⭐</div><span class="product-review">"Super solide."</span><div class="product-price">38 DT</div><button class="btn-add-cart" onclick="addToCart('Planche à Découper', 38)">Ajouter au panier 🛒</button></div>
+            </div>
+            <!-- 23 -->
+            <div class="product-card" data-title="bougeoir en pierre sculptee" data-category="deco" data-price="28" data-region="gabes">
+                <div class="product-img-wrapper bg-deco"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7ykMcHJI8dtO8drdSbgZjQyJgqAy9PuvakAfn1AEqA&s=10" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Gabès</span><h3 class="product-title">Bougeoir en Pierre</h3><div class="product-rating">⭐⭐⭐⭐☆</div><span class="product-review">"Ambiance chaleureuse."</span><div class="product-price">28 DT</div><button class="btn-add-cart" onclick="addToCart('Bougeoir en Pierre', 28)">Ajouter au panier 🛒</button></div>
+            </div>
+            <!-- 24 -->
+            <div class="product-card" data-title="gandoura tunisienne moderne" data-category="habits" data-price="110" data-region="hammamet">
+                <div class="product-img-wrapper bg-habits"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTarrxpB7pogL-1QoAJCe8088zii0FHrx2cY8_Mknwz5w&s=10" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Hammamet</span><h3 class="product-title">Gandoura Tunisienne</h3><div class="product-rating">⭐⭐⭐⭐⭐</div><span class="product-review">"Tissu très frais."</span><div class="product-price">110 DT</div><button class="btn-add-cart" onclick="addToCart('Gandoura Tunisienne', 110)">Ajouter au panier 🛒</button></div>
+            </div>
+            <!-- 25 -->
+            <div class="product-card" data-title="fouta de hammam en coton" data-category="habits" data-price="24" data-region="mahdia">
+                <div class="product-img-wrapper bg-habits"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAxgCrGHAcZIL3M9AxXUoROlWXHkK5GGbfLdwy-0enxg&s=10" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Mahdia</span><h3 class="product-title">Fouta Hammam Coton</h3><div class="product-rating">⭐⭐⭐⭐⭐</div><span class="product-review">"Sèche super vite."</span><div class="product-price">24 DT</div><button class="btn-add-cart" onclick="addToCart('Fouta Hammam Coton', 24)">Ajouter au panier 🛒</button></div>
+            </div>
+            <!-- 26 -->
+            <div class="product-card" data-title="klim tissé a la main" data-category="tapis" data-price="140" data-region="kairouan">
+                <div class="product-img-wrapper bg-tapis"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROopxDD2yyoqoULVwgddIGerIwJd_f8zgAjwLFgS-Hrg&s=10" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="product-info"><span class="product-region">Kairouan</span><h3 class="product-title">Klim Tissé Main</h3><div class="product-rating">⭐⭐⭐⭐⭐</div><span class="product-review">"Authentique."</span><div class="product-price">140 DT</div><button class="btn-add-cart" onclick="addToCart('Klim Tissé Main', 140)">Ajouter au panier 🛒</button></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function filterProducts() {
+            const searchQuery = document.getElementById("search-bar").value.toLowerCase();
+            const selectedCategory = document.getElementById("category-filter").value;
+            const maxPrice = parseFloat(document.getElementById("price-range").value);
+            
+            const cards = document.querySelectorAll(".product-card");
+
+            cards.forEach(card => {
+                const title = card.getAttribute("data-title");
+                const category = card.getAttribute("data-category");
+                const price = parseFloat(card.getAttribute("data-price"));
+
+                const matchesSearch = title.includes(searchQuery);
+                const matchesCategory = (selectedCategory === "all" || category === selectedCategory);
+                const matchesPrice = (price <= maxPrice);
+
+                if (matchesSearch && matchesCategory && matchesPrice) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function updatePriceLabel() {
+            const val = document.getElementById("price-range").value;
+            document.getElementById("price-val").textContent = val + " DT";
+        }
+
+        function addToCart(productName, productPrice) {
+            let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
+            let existingItem = cart.find(item => item.name === productName);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name: productName, price: parseFloat(productPrice), quantity: 1 });
+            }
+            localStorage.setItem("cart_items", JSON.stringify(cart));
+            updateCartCount();
+            alert(productName + " ajouté au panier ! 🎉");
+        }
+
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
+            let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            let countSpan = document.getElementById("cart-count");
+            if (countSpan) countSpan.textContent = totalItems;
+        }
+
+    <script src="chatbot.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisanat TN | Commande Confirmée</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        .success-box {
+            max-width: 600px;
+            margin: 80px auto;
+            background: #ffffff;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+            border-top: 6px solid #dfa843;
+        }
+        .success-icon {
+            font-size: 70px;
+            color: #10b981;
+            margin-bottom: 20px;
+            animation: scaleUp 0.5s ease-out;
+        }
+        @keyframes scaleUp {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+        .success-title {
+            color: #1e293b;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        .success-text {
+            color: #64748b;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+        .btn-return {
+            display: inline-block;
+            background: linear-gradient(135deg, #dfa843, #c79232);
+            color: white;
+            text-decoration: none;
+            padding: 14px 35px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(223, 168, 67, 0.3);
+            transition: all 0.2s;
+        }
+        .btn-return:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">Artisanat <span>TN</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="shop.html">Boutique</a></li>
+                <li><a href="map.html">Carte des Régions</a></li>
+                <li><a href="cart.html">Panier (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="success-box">
+            <div class="success-icon">🎉</div>
+            <h2 class="success-title">Commande Confirmée !</h2>
+            <p class="success-text">
+                Merci pour votre achat ! Votre commande a été enregistrée avec succès. <br>
+                Nos artisans préparent déjà votre colis avec amour. 🇹🇳
+            </p>
+            <a href="shop.html" class="btn-return">Retour à la boutique 🛒</a>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            localStorage.removeItem("cart");
+        });
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

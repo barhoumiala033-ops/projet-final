@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisanat TN | Mon Panier</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        .cart-wrapper {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-top: 30px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .cart-total {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 25px;
+            color: #1e293b;
+        }
+        .btn-checkout {
+            background: linear-gradient(135deg, #dfa843, #c79232);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            float: right;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">Artisanat <span>TN</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="shop.html">Boutique</a></li>
+                <li><a href="map.html">Carte des Régions</a></li>
+                <li><a href="cart.html" class="active">Panier (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container" style="margin-top: 40px; margin-bottom: 80px;">
+        <h2 class="section-title">Votre Panier d'Achat</h2>
+        
+        <div class="cart-wrapper">
+            <div id="cart-items-list">
+                
+            </div>
+            <div class="cart-total">Total: <span id="cart-total-price">0</span> DT</div>
+            <button class="btn-checkout" onclick="goToConfirmation()">Passer la commande 💳</button>
+            <div style="clear: both;"></div>
+        </div>
+    </main>
+
+    <script>
+        function displayCart() {
+            let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
+            let listContainer = document.getElementById("cart-items-list");
+            let totalContainer = document.getElementById("cart-total-price");
+            let countSpan = document.getElementById("cart-count");
+            
+            if (cart.length === 0) {
+                listContainer.innerHTML = "<p style='text-align:center; color:#64748b; padding: 20px;'>Votre panier est vide... 🛒</p>";
+                totalContainer.textContent = "0";
+                if (countSpan) countSpan.textContent = "0";
+                return;
+            }
+
+            let html = "";
+            let total = 0;
+            let totalCount = 0;
+
+            cart.forEach((item, index) => {
+                let itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                totalCount += item.quantity;
+
+                html += `
+                    <div class="cart-item">
+                        <div>
+                            <strong style="font-size:16px; color:#1e293b;">${item.name}</strong>
+                            <div style="color:#64748b; font-size:14px;">${item.price} DT x ${item.quantity}</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap: 20px;">
+                            <span style="font-weight:800; color:#dfa843;">${itemTotal} DT</span>
+                            <button class="btn-danger" onclick="removeItem(${index})">Supprimer 🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            listContainer.innerHTML = html;
+            totalContainer.textContent = total;
+            if (countSpan) countSpan.textContent = totalCount;
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart_items", JSON.stringify(cart));
+            displayCart();
+        }
+
+        
+        function goToConfirmation() {
+            let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
+            if(cart.length === 0) {
+                alert("Votre panier est vide !");
+                return;
+            }
+            window.location.href = "confirmation.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", displayCart);
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

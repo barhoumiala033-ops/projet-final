@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisanat TN | Nos Artisans</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        .artisans-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .artisan-card {
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            padding: 25px;
+        }
+        .artisan-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px auto;
+            border: 4px solid #dfa843;
+        }
+        .artisan-name {
+            font-size: 20px;
+            color: #1e293b;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .artisan-specialty {
+            color: #dfa843;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        .artisan-bio {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">Artisanat <span>TN</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="shop.html">Boutique 🛒</a></li>
+                <li><a href="artisans.html" class="active">Artisans 👨‍🎨</a></li>
+                <li><a href="cart.html">Panier (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container" style="margin-top: 40px; margin-bottom: 80px;">
+        <h2 class="section-title">Nos Maîtres Artisans</h2>
+        <p class="section-subtitle">Rencontrez les mains d'or derrière nos magnifiques créations tunisiennes.</p>
+
+        <div class="artisans-container">
+            
+            <div class="artisan-card">
+                <img class="artisan-img" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=60" alt="Amel">
+                <h3 class="artisan-name">Amel Mansour</h3>
+                <div class="artisan-specialty">Tissage & Margoum</div>
+                <p class="artisan-bio">Originaire de Kairouan, Amel tisse des tapis depuis plus de 20 ans. Elle utilise de la laine 100% naturelle et garde vivants les motifs berbères ancestraux.</p>
+            </div>
+
+          
+            <div class="artisan-card">
+                <img class="artisan-img" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=60" alt="Ahmed">
+                <h3 class="artisan-name">Uncle Ahmed</h3>
+                <div class="artisan-specialty">Poterie & Argile</div>
+                <p class="artisan-bio">Basé à Nabeul, Ahmed façonne l'argile à la main avec une précision rare. Ses vases bleus combinent tradition tunisienne et modernité.</p>
+            </div>
+
+           
+            <div class="artisan-card">
+                <img class="artisan-img" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=60" alt="Yasmine">
+                <h3 class="artisan-name">Yasmine Ben Ali</h3>
+                <div class="artisan-specialty">Cuir Artisanal</div>
+                <p class="artisan-bio">Spécialiste du cuir à Tunis, Yasmine crée des sacs et des babouches uniques. Elle travaille le cuir véritable avec des teintures écologiques.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisanat TN | Carte Interactive</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+       
+        .map-container-fixed {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            height: 520px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        .tunisia-map-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        
+        .region-btn {
+            position: absolute;
+            background: #ffffff;
+            border: 2px solid #dfa843;
+            color: #1e293b;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 10;
+        }
+
+        .region-btn:hover {
+            background: #dfa843;
+            color: #ffffff;
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 6px 15px rgba(223, 168, 67, 0.4);
+        }
+
+        .region-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 20px;
+            border: 1px solid #dfa843;
+            opacity: 0;
+            z-index: -1;
+            animation: pulseBtn 2s infinite;
+        }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.25); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">Artisanat <span>TN</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="shop.html">Boutique</a></li>
+                <li><a href="map.html" class="active">Carte des Régions 🗺️</a></li>
+                <li><a href="cart.html">Panier (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container" style="margin-top: 40px; margin-bottom: 80px;">
+        <h2 class="section-title">Voyage Autour de l'Artisanat Tunisien</h2>
+        <p class="section-subtitle">Découvrez l'origine de nos produits d'exception en cliquant sur les régions de Tunisie.</p>
+
+        <div style="display: flex; gap: 40px; margin-top: 40px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+            
+           
+            <div class="map-wrapper" style="background: #ffffff; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); width: 410px; border: 2px solid #dfa843;">
+                <h3 style="text-align: center; margin-bottom: 25px; color: #2c3e50; font-weight: 800;">Carte des Artisans 🇹🇳</h3>
+                
+                <div class="map-container-fixed">
+                    <!-- يقرأ التصويرة المحلية إلّي سجّلتها بيدك -->
+                    <img class="tunisia-map-img" src="tunisia-map.png" alt="Carte de la Tunisie">
+
+                    <!-- النقاط التفاعلية موزعة بالصانتي فوق الولايات بالظبط -->
+                    <button class="region-btn" style="top: 3%; left: 45%;" onclick="showRegion('bizerte')">📍 Bizerte</button>
+                    <button class="region-btn" style="top: 11%; left: 60%;" onclick="showRegion('nabeul')">📍 Nabeul</button>
+                    <button class="region-btn" style="top: 23%; left: 45%;" onclick="showRegion('kairouan')">📍 Kairouan</button>
+                    <button class="region-btn" style="top: 46%; left: 22%;" onclick="showRegion('gafsa')">📍 Gafsa</button>
+                    <button class="region-btn" style="top: 56%; left: 63%;" onclick="showRegion('djerba')">📍 Djerba</button>
+                </div>
+            </div>
+
+            
+            <div id="region-info-box" class="info-card-premium" style="flex: 1; min-width: 320px; background: #ffffff; padding: 40px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.06); border-top: 5px solid #dfa843; min-height: 440px;">
+                
+                <div id="default-info">
+                    <div style="font-size: 60px; text-align: center; margin-bottom: 25px;">🗺️</div>
+                    <h3 style="text-align: center; color: #2c3e50; font-size: 24px; font-weight: 700;">Explorez nos régions</h3>
+                    <p style="text-align: center; color: #64748b; margin-top: 15px; line-height: 1.7; font-size: 15px;">
+                        Chaque région tunisienne possède un savoir-faire artisanal unique. Cliquez sur une ville sur la carte pour découvrir son histoire et ses produits !
+                    </p>
+                </div>
+
+                <div id="dynamic-info" style="display: none;">
+                    <h3 id="region-title" style="color: #2c3e50; font-size: 28px; margin-bottom: 12px; font-weight: 800;">Nom de la Région</h3>
+                    <span id="region-specialty" style="background: rgba(223, 168, 67, 0.12); color: #c79232; font-weight: bold; padding: 6px 16px; border-radius: 30px; font-size: 13px; display: inline-block; margin-bottom: 20px; border: 1px solid rgba(223, 168, 67, 0.3);">Spécialité</span>
+                    <p id="region-desc" style="color: #475569; margin-top: 10px; line-height: 1.7; font-size: 15.5px;">Description...</p>
+                    <div style="margin-top: 50px; text-align: right;">
+                        <a id="region-link" href="shop.html" style="display: inline-block; text-decoration: none; text-align: center; background: linear-gradient(135deg, #dfa843, #c79232); color: white; padding: 14px 32px; border-radius: 12px; font-weight: bold; box-shadow: 0 5px 20px rgba(223,168,67,0.3); transition: all 0.3s;">Voir la boutique 🛒</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const regionsData = {
+            nabeul: {
+                title: "Nabeul (نابل)",
+                specialty: "Poterie & Céramique Fine",
+                desc: "Capitale incontournable de la poterie en Tunisie, Nabeul est célèbre pour ses assiettes richement décorées, ses vases azurs peints à la main et ses faïences artisanales.",
+                filter: "poterie"
+            },
+            kairouan: {
+                title: "Kairouan (القيروان)",
+                specialty: "Tapis Berbère & Margoum",
+                desc: "Haut lieu historique de l'artisanat du tissage. Les artisanes de Kairouan créent de magnifiques tapis et Margoums en pure laine, réputés pour la finesse de leurs motifs géométriques.",
+                filter: "tapis"
+            },
+            bizerte: {
+                title: "Sejnane - Bizerte (سجنان)",
+                specialty: "Poterie de Sejnane (UNESCO)",
+                desc: "La poterie de Sejnane est façonnée par les femmes avec des méthodes ancestrales uniques datant de l'âge du bronze. Classée au patrimoine mondial de l'UNESCO.",
+                filter: "poterie"
+            },
+            gafsa: {
+                title: "Gafsa (قفصة)",
+                specialty: "Klim Gafsi Traditionnel",
+                desc: "Reconnaissable entre tous grâce à ses couleurs chaudes et vibrantes et ses motifs de caravanes et de chameaux. Un tissage berbère solide et très décoratif.",
+                filter: "tapis"
+            },
+            djerba: {
+                title: "Djerba (جربة)",
+                specialty: "Chapeaux en Paille & Tissage",
+                desc: "L'artisanat djerbien brille par le travail délicat des feuilles de palmiers, donnant vie au célèbre chapeau 'Mdhalla' et à des couffins traditionnels chics.",
+                filter: "all"
+            }
+        };
+
+        function showRegion(id) {
+            const data = regionsData[id];
+            if (!data) return;
+
+            document.getElementById("default-info").style.display = "none";
+            document.getElementById("dynamic-info").style.display = "block";
+
+            document.getElementById("region-title").textContent = data.title;
+            document.getElementById("region-specialty").textContent = data.specialty;
+            document.getElementById("region-desc").textContent = data.desc;
+            
+            document.getElementById("region-link").href = `shop.html?filter=${data.filter}`;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const countSpan = document.getElementById("cart-count");
+            if (countSpan) {
+                countSpan.textContent = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+            }
+        });
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

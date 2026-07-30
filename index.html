@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisanat TN | Accueil</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">Artisanat <span>TN</span></div>
+            <ul class="nav-links">
+                <li><a href="map.html">Carte des Régions 🗺️</a></li>
+                <li><a href="index.html" class="active">Accueil</a></li>
+                <li><a href="shop.html">Boutique</a></li>
+                <li><a href="cart.html">Panier (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="slider-container">
+        <div class="slider">
+            <div class="slide active">
+                <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1200" alt="Tissage Tunisien">
+                <div class="slide-content">
+                    <h2>Artisanat Tunisien Authentique</h2>
+                    <p>Des créations uniques, faites main avec passion.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1610701596007-11502861affa?q=80&w=1200" alt="Poterie de Nabeul">
+                <div class="slide-content">
+                    <h2>Art de la Céramique de Nabeul</h2>
+                    <p>Sublimez votre espace avec de la poterie fine.</p>
+                </div>
+            </div>
+        </div>
+        <button class="slider-btn prev-btn">&#10094;</button>
+        <button class="slider-btn next-btn">&#10095;</button>
+    </section>
+
+    <section class="services-banner container">
+        <div class="service-item">⚡ <h3>Livraison Rapide</h3><p>Sur toute la Tunisie (72h)</p></div>
+        <div class="service-item">🏅 <h3>Qualité Garantie</h3><p>100% Fait Main</p></div>
+        <div class="service-item">🔒 <h3>Paiement Sécurisé</h3><p>À la livraison</p></div>
+    </section>
+
+    <main class="container">
+        <h2 class="section-title">Nos Catégories Phares</h2>
+        <div class="categories-grid">
+            <div class="category-card" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1600121848594-d8644e57abab?q=80&w=500'); background-size: cover; background-position: center;">
+                <h3>Tapis & Tissage</h3>
+                <p>Margoum, Klim & Tissages traditionnels</p>
+                <a href="shop.html" class="btn">Découvrir le catalogue</a>
+            </div>
+            <div class="category-card" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?q=80&w=500'); background-size: cover; background-position: center;">
+                <h3>Poterie & Déco</h3>
+                <p>Ouvrages en terre cuite de Sejnane</p>
+                <a href="shop.html" class="btn">Découvrir le catalogue</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- SECTION FORMULAIRE CLIENT PREMIUM (مع التحويل التلقائي) -->
+    <section class="client-form-section container">
+        <h2 class="section-title">Rejoignez Notre Communauté</h2>
+        <p class="section-subtitle">Inscrivez-vous pour recevoir nos dernières créations et offres exclusives</p>
+        
+        <div class="form-wrapper">
+            <form id="welcome-form" onsubmit="event.preventDefault(); alert('Bienvenue dans notre communauté ! Redirection vers la boutique...'); window.location.href='shop.html';">
+                <div class="form-row">
+                    <div class="form-group-premium">
+                        <label for="client-nom">Nom</label>
+                        <input type="text" id="client-nom" placeholder="Votre nom" required>
+                    </div>
+                    <div class="form-group-premium">
+                        <label for="client-prenom">Prénom</label>
+                        <input type="text" id="client-prenom" placeholder="Votre prénom" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-premium">
+                        <label for="client-tel">Numéro de Téléphone</label>
+                        <input type="tel" id="client-tel" placeholder="Ex: 98 123 456" pattern="[0-9]{8}" required>
+                    </div>
+                    <div class="form-group-premium">
+                        <label for="client-gouvernorat">Gouvernorat (24 Wilayas)</label>
+                        <select id="client-gouvernorat" required>
+                            <option value="" disabled selected>Choisir votre gouvernorat</option>
+                            <option value="ariana">Ariana (أريانة)</option>
+                            <option value="beja">Béja (باجة)</option>
+                            <option value="benarous">Ben Arous (بن عروس)</option>
+                            <option value="bizerte">Bizerte (بنزرت)</option>
+                            <option value="gabes">Gabès (قابس)</option>
+                            <option value="gafsa">Gafsa (قفصة)</option>
+                            <option value="jendouba">Jendouba (جندوبة)</option>
+                            <option value="kairouan">Kairouan (القيروان)</option>
+                            <option value="kasserine">Kasserine (القصرين)</option>
+                            <option value="kebili">Kébili (قبلي)</option>
+                            <option value="kef">Le Kef (الكاف)</option>
+                            <option value="mahdia">Mahdia (المهدية)</option>
+                            <option value="manouba">Manouba (منوبة)</option>
+                            <option value="medenine">Médenine (مدنين)</option>
+                            <option value="monastir">Monastir (المنستير)</option>
+                            <option value="nabeul">Nabeul (نابل)</option>
+                            <option value="sfax">Sfax (صفاقس)</option>
+                            <option value="sidibouzid">Sidi Bouzid (سيدي بوزيد)</option>
+                            <option value="siliana">Siliana (سليانة)</option>
+                            <option value="sousse">Sousse (سوسة)</option>
+                            <option value="tataouine">Tataouine (تطاوين)</option>
+                            <option value="tozeur">Tozeur (توزر)</option>
+                            <option value="tunis">Tunis (تونس)</option>
+                            <option value="zaghouan">Zaghouan (زغوان)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-submit-center">
+                    <button type="submit" class="btn btn-gold-premium">S'inscrire Maintenant ✨</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="main.js"></script>
+    <script src="slideshow.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html>
